@@ -8,7 +8,6 @@ ENV MYSQL_PASSWORD=mypassword
 FROM mysql:latest
 
 COPY --from=build /var/lib/mysql /var/lib/mysql
-COPY --from=build /etc/mysql/my.cnf /etc/mysql/my.cnf
 
 EXPOSE 3306
 
