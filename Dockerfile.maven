@@ -1,0 +1,17 @@
+FROM maven:latest as build
+
+COPY pom.xml /app/
+
+RUN cd /app && mvn dependency:go-offline -B
+
+COPY src /app/src/
+
+RUN cd /app && mvn test
+
+FROM maven:latest
+
+COPY --from=build /app /app
+
+RUN cd /app && mvn package -DskipTests
+
+CMD ["java", "-jar", "/app/target/myapp.jar"]

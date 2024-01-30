@@ -1,0 +1,17 @@
+FROM mysql:latest as build
+
+ENV MYSQL_ROOT_PASSWORD=root
+ENV MYSQL_DATABASE=mydatabase
+ENV MYSQL_USER=myuser
+ENV MYSQL_PASSWORD=mypassword
+
+COPY init.sql /docker-entrypoint-initdb.d/
+
+FROM mysql:latest
+
+COPY --from=build /var/lib/mysql /var/lib/mysql
+COPY --from=build /etc/mysql/my.cnf /etc/mysql/my.cnf
+
+EXPOSE 3306
+
+CMD ["mysqld"]
